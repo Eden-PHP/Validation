@@ -16,6 +16,6 @@
 		"eden-php/core": "1.*"
     },
     "autoload": {
-         "psr-0": { "Eden\\": "library/" }
+         "psr-0": { "Eden\\Validation\\": "" }
     }
 }
