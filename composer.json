@@ -1,5 +1,5 @@
 {
-    "name": "eden-php/validation",
+    "name": "eden/validation",
     "type": "library",
     "description": "Eden validation component",
     "keywords": ["eden", "library"],
