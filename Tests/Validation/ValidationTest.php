@@ -7,7 +7,7 @@
  * distributed with this package.
  */
 
-class Eden_Tests_Validation_ValidationTest extends \PHPUnit_Framework_TestCase
+class Eden_Validation_Tests_Validation_ValidationTest extends \PHPUnit_Framework_TestCase
 {
     public function testIsType()
     {
