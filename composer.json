@@ -1,7 +1,7 @@
 {
     "name": "eden/validation",
     "type": "library",
-    "description": "Eden validation component",
+    "description": "Eden validation component.",
     "keywords": ["eden", "library"],
     "homepage": "http://eden-php.com",
     "license": "MIT",
@@ -13,10 +13,9 @@
     ],
     "require": {
         "php": ">=5.3.1",
-		"eden/core": "1.*"
+		"eden/core": "2.*",
     },
     "autoload": {
-         "psr-0": { "Eden\\Validation\\": "" }
-    },
-	"target-dir": "Eden/Validation"
+         "psr-4": { "Eden\\Validation\\": "/src" }
+    }
 }

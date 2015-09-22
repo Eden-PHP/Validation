@@ -9,8 +9,6 @@
 
 namespace Eden\Validation;
 
-use Eden\Core\Base as CoreBase;
-
 /**
  * The base class for all classes wishing to integrate with Eden.
  * Extending this class will allow your methods to seemlessly be
@@ -18,12 +16,11 @@ use Eden\Core\Base as CoreBase;
  * loading patterns.
  *
  * @vendor Eden
- * @package Validation
+ * @package validation
  * @author Christian Blanquera cblanquera@openovate.com
  */
-class Base extends CoreBase
+class Index extends Base
 {
-
 	protected $value = null;
 	
 	/**
@@ -43,38 +40,58 @@ class Base extends CoreBase
 	 * @param string
 	 * @param bool
 	 */
-	public function isType($type) 
+	public function isType($type, $soft = false) 
 	{
 		//argument 1 must be a string
 		Argument::i()->test(1, 'string');
 		
-		switch($type) {
-			case 'number':
+		switch(true) {
+			case $type === 'number':
 				return is_numeric($this->value);
-			case 'integer':
-			case 'int':
+			case $type === 'integer':
+			case $type === 'int':
 				return is_numeric($this->value) && strpos((string) $this->value, '.') === false;
-			case 'float':
+			case $type === 'int' && $soft:
+				return $this->isSoftInteger($this->value);
+			case $type === 'float':
 				return is_numeric($this->value) && strpos((string) $this->value, '.') !== false;
-			case 'file':
+			case $type === 'float' && $soft:
+				return $this->isSoftFloat($this->value);
+			case $type === 'bool' && $soft:
+				return $this->isSoftBool($this->value);
+			case $type === 'file':
 				return is_string($this->value) && file_exists($this->value);
-			case 'folder':
+			case $type === 'folder':
 				return is_string($this->value) && is_dir($this->value);
-			case 'email':
+			case $type === 'date':
+				return is_string($this->value) && $this->isDate($this->value);
+			case $type === 'time':
+				return is_string($this->value) && $this->isTime($this->value);
+			case $type === 'email':
 				return is_string($this->value) && $this->isEmail($this->value);
-			case 'url':
+			case $type === 'json':
+				return is_string($this->value) && $this->isJson($this->value);
+			case $type === 'url':
 				return is_string($this->value) && $this->isUrl($this->value);
-			case 'html':
+			case $type === 'html':
 				return is_string($this->value) && $this->isHtml($this->value);
-			case 'creditcard':
-			case 'cc':
+			case $type === 'creditcard':
+			case $type === 'cc':
 				return (is_string($this->value) || is_int($this->value)) && $this->isCreditCard($this->value);
-			case 'hex':
+			case $type === 'hex':
 				return is_string($this->value) && $this->isHex($this->value);
-			case 'slug':
-			case 'shortname':
-			case 'short':
+			case $type === 'slug':
+			case $type === 'shortname':
+			case $type === 'short':
 				return !!preg_match("/^[a-z0-9-_]+$/", $this->value);
+			case $type === 'alphanum':
+				return is_string($this->value) && $this->alphaNumericUnderScore();
+			case $type === 'alphanum_':
+				return is_string($this->value) && $this->alphaNumericUnderScore();
+			case $type === 'alphanum-':
+				return is_string($this->value) && $this->alphaNumericHyphen();
+			case $type === 'alphanum-_':
+				return is_string($this->value) && $this->alphaNumericLine();
 			default: break;
 		}
 		
@@ -87,7 +104,7 @@ class Base extends CoreBase
 			return $this->value instanceof $type;
 		}
 		
-		return true;
+		return false;
 	}
 	
 	/**
@@ -277,6 +294,17 @@ class Base extends CoreBase
 		return preg_match('/^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]'.
 		'{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-'.
 		'5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/', $value);
+	}
+	
+	/**
+	 * Returns true if the value is a mysql date
+	 *
+	 * @param scalar
+	 * @return bool
+	 */
+	protected function isDate($value) 
+	{
+		return preg_match('/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}/is', (string) $value);
 	} 
 	
 	/**
@@ -294,7 +322,7 @@ class Base extends CoreBase
 		'[^@,"\[\]\x5c\x00-\x20\x7f-\xff\.]{1,2})|"(?:[^"]|(?<=\x5c)"){1,62}")@(?:(?!.{64})'.
 		'(?:[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.?|[a-zA-Z0-9]\.?)+\.(?:xn--[a-zA-Z0-9]'.
 		'+|[a-zA-Z]{2,6})|\[(?:[0-1]?\d?\d|2[0-4]\d|25[0-5])(?:\.(?:[0-1]?\d?\d|2[0-4]\d|25'.
-		'[0-5])){3}\])$/', $value);
+		'[0-5])){3}\])$/', (string) $value);
 	}
 	
 	/**
@@ -306,8 +334,99 @@ class Base extends CoreBase
 	protected function isHtml($value) 
 	{
 		return preg_match("/<\/?\w+((\s+(\w|\w[\w-]*\w)(\s*=\s*".
-		"(?:\".*?\"|'.*?'|[^'\">\s]+))?)+\s*|\s*)\/?>/i", $value);
+		"(?:\".*?\"|'.*?'|[^'\">\s]+))?)+\s*|\s*)\/?>/i", (string) $value);
 	}
+	
+	/**
+	 * Returns true if the value is JSON
+	 *
+	 * @param scalar
+	 * @return bool
+	 */
+	protected function isJson($string) 
+	{
+		json_decode($string);
+ 		return json_last_error() === JSON_ERROR_NONE;
+	}
+	
+	/**
+	 * Test if 0 or 1 or string 1 oe 0
+	 *
+	 * @param string|number
+	 * @return this
+	 */
+	protected function isSoftBool($string) 
+	{
+		if(!is_scalar($string) || $string === null) {
+			return false;
+		}
+		
+		$string = (string) $string;
+		
+		return $string == '0' || $string == '1';
+	}
+	
+	/**
+	 * Test if float or string float
+	 *
+	 * @param string|number
+	 * @return this
+	 */
+	protected function isSoftFloat($number)
+	{
+		if(!is_scalar($number) || $number === null) {
+			return false;
+		}
+		
+		$number = (string) $number;
+		
+		return preg_match('/^[-+]?(\d*)?\.\d+$/', $number);
+	}
+	
+	/**
+	 * Test if integer or string integer
+	 *
+	 * @param string|number
+	 * @return this
+	 */
+	protected function isSoftInteger($number)
+	{
+		if(!is_scalar($number) || $number === null) {
+			return false;
+		}
+		
+		$number = (string) $number;
+		
+		return preg_match('/^[-+]?\d+$/', $number);
+	}
+	
+	/**
+	 * Returns true if the value is between 0 and 9
+	 *
+	 * @param scalar
+	 * @return bool
+	 */
+	protected function isSmall($value) 
+	{
+		if(!is_scalar($value) || $value === null) {
+			return false;
+		}
+		
+		$value = (float) $value;
+		
+		return $number >= 0 && $number <= 9;
+	} 
+	
+	/**
+	 * Returns true if the value is a mysql time
+	 *
+	 * @param scalar
+	 * @return bool
+	 */
+	protected function isTime($value) 
+	{
+		return preg_match('/^[0-9]{2}\:[0-9]{2}\:[0-9]{2}$/is', (string) $value);
+	} 
 	
 	/**
 	 * Returns true if the value is a URL
@@ -318,7 +437,7 @@ class Base extends CoreBase
 	protected function isUrl($value) 
 	{
 		return preg_match('/^(http|https|ftp):\/\/([A-Z0-9][A-Z0'.
-		'-9_-]*(?:.[A-Z0-9][A-Z0-9_-]*)+):?(d+)?\/?/i', $value);
+		'-9_-]*(?:.[A-Z0-9][A-Z0-9_-]*)+):?(d+)?\/?/i', (string) $value);
 	}
 	
 	/**
@@ -329,7 +448,7 @@ class Base extends CoreBase
 	 */
 	protected function isHex($value) 
 	{
-		return preg_match("/^[0-9a-fA-F]{6}$/", $value);
+		return preg_match("/^[0-9a-fA-F]{6}$/", (string) $value);
 	}
 	
 }
