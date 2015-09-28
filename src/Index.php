@@ -29,7 +29,7 @@ class Index extends Base
 	 * @param mixed
 	 * @return void
 	 */
-	public function __construct($value) 
+	public function __construct($value = null) 
 	{	
 		$this->value = $value;
 	}
@@ -46,19 +46,26 @@ class Index extends Base
 		Argument::i()->test(1, 'string');
 		
 		switch(true) {
-			case $type === 'number':
+			case $type === 'number' && $soft:
 				return is_numeric($this->value);
+			case $type === 'number':
+				return is_int($this->value) || is_float($this->value);
+			case $type === 'integer' && $soft:
+			case $type === 'int' && $soft:
+				return $this->isSoftInteger($this->value);
 			case $type === 'integer':
 			case $type === 'int':
 				return is_numeric($this->value) && strpos((string) $this->value, '.') === false;
-			case $type === 'int' && $soft:
-				return $this->isSoftInteger($this->value);
-			case $type === 'float':
-				return is_numeric($this->value) && strpos((string) $this->value, '.') !== false;
 			case $type === 'float' && $soft:
 				return $this->isSoftFloat($this->value);
+			case $type === 'float':
+				return is_numeric($this->value) && strpos((string) $this->value, '.') !== false;
 			case $type === 'bool' && $soft:
 				return $this->isSoftBool($this->value);
+			case $type === 'small' && $soft:
+				return $this->isSoftSmall($this->value);
+			case $type === 'small':
+				return $this->value >= 0 && $this->value <= 9;
 			case $type === 'file':
 				return is_string($this->value) && file_exists($this->value);
 			case $type === 'folder':
@@ -284,6 +291,18 @@ class Index extends Base
 	}
 	
 	/**
+	 * Sets the value to be validated
+	 *
+	 * @param mixed
+	 * @return this
+	 */
+	public function set($value) 
+	{	
+		$this->value = $value;
+		return $this;
+	}
+	
+	/**
 	 * Returns true if the value is a credit card
 	 *
 	 * @param scalar
@@ -406,7 +425,7 @@ class Index extends Base
 	 * @param scalar
 	 * @return bool
 	 */
-	protected function isSmall($value) 
+	protected function isSoftSmall($value) 
 	{
 		if(!is_scalar($value) || $value === null) {
 			return false;
@@ -414,7 +433,7 @@ class Index extends Base
 		
 		$value = (float) $value;
 		
-		return $number >= 0 && $number <= 9;
+		return $value >= 0 && $value <= 9;
 	} 
 	
 	/**
