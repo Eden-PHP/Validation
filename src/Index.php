@@ -45,7 +45,7 @@ class Index extends Base
         //argument 1 must be a string
         Argument::i()->test(1, 'string');
         
-        switch(true) {
+        switch (true) {
             case $type === 'number' && $soft:
                 return is_numeric($this->value);
             case $type === 'number':
