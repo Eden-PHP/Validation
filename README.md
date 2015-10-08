@@ -1,3 +1,5 @@
+[![Build Status](https://api.travis-ci.org/Eden-PHP/Validation.png)](https://travis-ci.org/Eden-PHP/Validation)
+===
 # Validation
 
 ====
