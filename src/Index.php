@@ -15,9 +15,10 @@ namespace Eden\Validation;
  * overloaded and overrided as well as provide some basic class
  * loading patterns.
  *
- * @vendor Eden
- * @package validation
- * @author Christian Blanquera cblanquera@openovate.com
+ * @vendor   Eden
+ * @package  validation
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 class Index extends Base
 {
@@ -27,6 +28,7 @@ class Index extends Base
      * Sets the value to be validated
      *
      * @param mixed
+     *
      * @return void
      */
     public function __construct($value = null)
@@ -119,6 +121,7 @@ class Index extends Base
      * Returns true if the value is greater than the passed argument
      *
      * @param number
+     *
      * @return bool
      */
     public function greaterThan($number)
@@ -134,6 +137,7 @@ class Index extends Base
      * equal to than the passed argument
      *
      * @param number
+     *
      * @return bool
      */
     public function greaterThanEqualTo($number)
@@ -148,6 +152,7 @@ class Index extends Base
      * Returns true if the value is less than the passed argument
      *
      * @param number
+     *
      * @return bool
      */
     public function lessThan($number)
@@ -163,6 +168,7 @@ class Index extends Base
      * or equal the passed argument
      *
      * @param number
+     *
      * @return bool
      */
     public function lessThanEqualTo($number)
@@ -177,6 +183,7 @@ class Index extends Base
      * Returns true if the value length is greater than the passed argument
      *
      * @param number
+     *
      * @return bool
      */
     public function lengthGreaterThan($number)
@@ -192,6 +199,7 @@ class Index extends Base
      * than or equal to the passed argument
      *
      * @param number
+     *
      * @return bool
      */
     public function lengthGreaterThanEqualTo($number)
@@ -206,6 +214,7 @@ class Index extends Base
      * Returns true if the value length is less than the passed argument
      *
      * @param number
+     *
      * @return bool
      */
     public function lengthLessThan($number)
@@ -221,6 +230,7 @@ class Index extends Base
      * than or equal to the passed argument
      *
      * @param number
+     *
      * @return bool
      */
     public function lengthLessThanEqualTo($number)
@@ -295,6 +305,7 @@ class Index extends Base
      * Sets the value to be validated
      *
      * @param mixed
+     *
      * @return this
      */
     public function set($value)
@@ -307,6 +318,7 @@ class Index extends Base
      * Returns true if the value is a credit card
      *
      * @param scalar
+     *
      * @return bool
      */
     protected function isCreditCard($value)
@@ -320,6 +332,7 @@ class Index extends Base
      * Returns true if the value is a mysql date
      *
      * @param scalar
+     *
      * @return bool
      */
     protected function isDate($value)
@@ -331,6 +344,7 @@ class Index extends Base
      * Returns true if the value is an email
      *
      * @param scalar
+     *
      * @return bool
      */
     protected function isEmail($value)
@@ -349,6 +363,7 @@ class Index extends Base
      * Returns true if the value is HTML
      *
      * @param scalar
+     *
      * @return bool
      */
     protected function isHtml($value)
@@ -361,6 +376,7 @@ class Index extends Base
      * Returns true if the value is JSON
      *
      * @param scalar
+     *
      * @return bool
      */
     protected function isJson($string)
@@ -373,6 +389,7 @@ class Index extends Base
      * Test if 0 or 1 or string 1 oe 0
      *
      * @param string|number
+     *
      * @return this
      */
     protected function isSoftBool($string)
@@ -390,6 +407,7 @@ class Index extends Base
      * Test if float or string float
      *
      * @param string|number
+     *
      * @return this
      */
     protected function isSoftFloat($number)
@@ -407,6 +425,7 @@ class Index extends Base
      * Test if integer or string integer
      *
      * @param string|number
+     *
      * @return this
      */
     protected function isSoftInteger($number)
@@ -424,6 +443,7 @@ class Index extends Base
      * Returns true if the value is between 0 and 9
      *
      * @param scalar
+     *
      * @return bool
      */
     protected function isSoftSmall($value)
@@ -441,6 +461,7 @@ class Index extends Base
      * Returns true if the value is a mysql time
      *
      * @param scalar
+     *
      * @return bool
      */
     protected function isTime($value)
@@ -452,6 +473,7 @@ class Index extends Base
      * Returns true if the value is a URL
      *
      * @param scalar
+     *
      * @return bool
      */
     protected function isUrl($value)
@@ -464,6 +486,7 @@ class Index extends Base
      * Returns true if the value is a hex
      *
      * @param scalar
+     *
      * @return bool
      */
     protected function isHex($value)
