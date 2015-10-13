@@ -1,32 +1,34 @@
 <?php //-->
-/*
- * This file is part of the Validation package of the Eden PHP Library.
- * (c) 2013-2014 Openovate Labs
+/**
+ * This file is part of the Eden PHP Library.
+ * (c) 2014-2016 Openovate Labs
  *
- * Copyright and license information can be found at LICENSE
+ * Copyright and license information can be found at LICENSE.txt
  * distributed with this package.
  */
 
 namespace Eden\Validation;
 
 /**
- * The base class for all classes wishing to integrate with Eden.
- * Extending this class will allow your methods to seemlessly be
- * overloaded and overrided as well as provide some basic class
- * loading patterns.
+ * Validation Factory Class
  *
- * @vendor Eden
- * @package validation
- * @author Christian Blanquera cblanquera@openovate.com
+ * @package  Eden
+ * @category Validation
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 class Index extends Base
 {
+    /**
+     * @var string|null $value The data being manipulated
+     */
     protected $value = null;
     
     /**
      * Sets the value to be validated
      *
-     * @param mixed
+     * @param *mixed $value value
+     *
      * @return void
      */
     public function __construct($value = null)
@@ -37,8 +39,10 @@ class Index extends Base
     /**
      * Returns true if the value is a given type
      *
-     * @param string
-     * @param bool
+     * @param *string $type The data type to check for
+     * @param bool    $soft This is like == vs ===
+     *
+     * @return bool
      */
     public function isType($type, $soft = false)
     {
@@ -118,7 +122,8 @@ class Index extends Base
     /**
      * Returns true if the value is greater than the passed argument
      *
-     * @param number
+     * @param *int $number Number to test against
+     *
      * @return bool
      */
     public function greaterThan($number)
@@ -133,7 +138,8 @@ class Index extends Base
      * Returns true if the value is greater or
      * equal to than the passed argument
      *
-     * @param number
+     * @param *int $number Number to test against
+     *
      * @return bool
      */
     public function greaterThanEqualTo($number)
@@ -147,7 +153,8 @@ class Index extends Base
     /**
      * Returns true if the value is less than the passed argument
      *
-     * @param number
+     * @param *int $number Number to test against
+     *
      * @return bool
      */
     public function lessThan($number)
@@ -162,7 +169,8 @@ class Index extends Base
      * Returns true if the value is less than
      * or equal the passed argument
      *
-     * @param number
+     * @param *int $number Number to test against
+     *
      * @return bool
      */
     public function lessThanEqualTo($number)
@@ -176,7 +184,8 @@ class Index extends Base
     /**
      * Returns true if the value length is greater than the passed argument
      *
-     * @param number
+     * @param *int $number Number to test against
+     *
      * @return bool
      */
     public function lengthGreaterThan($number)
@@ -191,7 +200,8 @@ class Index extends Base
      * Returns true if the value length is greater
      * than or equal to the passed argument
      *
-     * @param number
+     * @param *int $number Number to test against
+     *
      * @return bool
      */
     public function lengthGreaterThanEqualTo($number)
@@ -205,7 +215,8 @@ class Index extends Base
     /**
      * Returns true if the value length is less than the passed argument
      *
-     * @param number
+     * @param *int $number Number to test against
+     *
      * @return bool
      */
     public function lengthLessThan($number)
@@ -220,7 +231,8 @@ class Index extends Base
      * Returns true if the value length is less
      * than or equal to the passed argument
      *
-     * @param number
+     * @param *int $number Number to test against
+     *
      * @return bool
      */
     public function lengthLessThanEqualTo($number)
@@ -294,8 +306,8 @@ class Index extends Base
     /**
      * Sets the value to be validated
      *
-     * @param mixed
-     * @return this
+     * @param *mixed $value value
+     * @return Eden\Validation\Index
      */
     public function set($value)
     {
@@ -306,7 +318,8 @@ class Index extends Base
     /**
      * Returns true if the value is a credit card
      *
-     * @param scalar
+     * @param *scalar $value Value to test
+     *
      * @return bool
      */
     protected function isCreditCard($value)
@@ -319,7 +332,8 @@ class Index extends Base
     /**
      * Returns true if the value is a mysql date
      *
-     * @param scalar
+     * @param *scalar $value Value to test
+     *
      * @return bool
      */
     protected function isDate($value)
@@ -330,7 +344,8 @@ class Index extends Base
     /**
      * Returns true if the value is an email
      *
-     * @param scalar
+     * @param *scalar $value Value to test
+     *
      * @return bool
      */
     protected function isEmail($value)
@@ -348,7 +363,8 @@ class Index extends Base
     /**
      * Returns true if the value is HTML
      *
-     * @param scalar
+     * @param *scalar $value Value to test
+     *
      * @return bool
      */
     protected function isHtml($value)
@@ -360,7 +376,8 @@ class Index extends Base
     /**
      * Returns true if the value is JSON
      *
-     * @param scalar
+     * @param *scalar $string Value to test
+     *
      * @return bool
      */
     protected function isJson($string)
@@ -372,8 +389,9 @@ class Index extends Base
     /**
      * Test if 0 or 1 or string 1 oe 0
      *
-     * @param string|number
-     * @return this
+     * @param *scalar $string Value to test
+     *
+     * @return bool
      */
     protected function isSoftBool($string)
     {
@@ -389,8 +407,9 @@ class Index extends Base
     /**
      * Test if float or string float
      *
-     * @param string|number
-     * @return this
+     * @param *scalar $number Value to test
+     *
+     * @return bool
      */
     protected function isSoftFloat($number)
     {
@@ -406,8 +425,9 @@ class Index extends Base
     /**
      * Test if integer or string integer
      *
-     * @param string|number
-     * @return this
+     * @param *scalar $number Value to test
+     *
+     * @return bool
      */
     protected function isSoftInteger($number)
     {
@@ -423,7 +443,8 @@ class Index extends Base
     /**
      * Returns true if the value is between 0 and 9
      *
-     * @param scalar
+     * @param *scalar $value Value to test
+     *
      * @return bool
      */
     protected function isSoftSmall($value)
@@ -440,7 +461,8 @@ class Index extends Base
     /**
      * Returns true if the value is a mysql time
      *
-     * @param scalar
+     * @param *scalar $value Value to test
+     *
      * @return bool
      */
     protected function isTime($value)
@@ -451,7 +473,8 @@ class Index extends Base
     /**
      * Returns true if the value is a URL
      *
-     * @param scalar
+     * @param *scalar $value Value to test
+     *
      * @return bool
      */
     protected function isUrl($value)
@@ -463,7 +486,8 @@ class Index extends Base
     /**
      * Returns true if the value is a hex
      *
-     * @param scalar
+     * @param *scalar $value Value to test
+     *
      * @return bool
      */
     protected function isHex($value)
